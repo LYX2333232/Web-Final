@@ -1,11 +1,23 @@
-import {createRouter,createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import useUserStore from '@/stores/user.js'
 
 const routes = [
     {
         path: '/',
         name: 'Home',
-        component: () => import('@/views/home/homePage.vue')
+        redirect: '/buyerHome',
+        children: [
+            {
+                path: 'buyerHome',
+                name: 'buyer',
+                component: () => import('@/views/buyer/buyerPage.vue')
+            },
+            {
+                path: 'sellerHome',
+                name: 'seller',
+                component: () => import('@/views/seller/sellerPage.vue')
+            }
+        ]
     },
     {
         path: '/login',
@@ -18,13 +30,13 @@ const router = createRouter({
     // eslint-disable-next-line no-undef
     history: createWebHistory(),
     routes
-})  
+})
 
-router.beforeEach((to,from,next) => {
+router.beforeEach((to, from, next) => {
     const userStore = useUserStore()
-    if(to.name !== 'Login' && !userStore.isLogin){
-        next({name: 'Login'})
-    }else{
+    if (to.name !== 'Login' && !userStore.isLogin) {
+        next({ name: 'Login' })
+    } else {
         next()
     }
 })

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', () => {
@@ -8,22 +8,27 @@ export const useUserStore = defineStore('user', () => {
     const isSeller = ref(false)
     const isLogin = ref(false)
     const login = (username, password, isBuyer, isSeller) => {
-        console.log('login')
-        this.username.value = username
-        this.password.value = password
-        this.isLogin.value = true
-        this.isBuyer.value = isBuyer
-        this.isSeller.value = isSeller
+        if (true) {
+            localStorage.setItem('isLogin', 'true')
+            localStorage.setItem('username', username)
+            localStorage.setItem('password', password)
+            localStorage.setItem('isBuyer', isBuyer)
+            localStorage.setItem('isSeller', isSeller)
+            isLogin.value = true
+        }
     }
     const logout = () => {
-        console.log('logout')
-        this.username.value = ''
-        this.password.value = ''
-        this.isLogin.value = false
-        this.isBuyer.value = false
-        this.isSeller.value = false
         localStorage.clear()
     }
+    onMounted(() => {
+        if (localStorage.getItem('isLogin') === 'true') {
+            username.value = localStorage.getItem('username')
+            password.value = localStorage.getItem('password')
+            isLogin.value = localStorage.getItem('isLogin') === 'true'
+            isBuyer.value = localStorage.getItem('isBuyer') === 'true'
+            isSeller.value = localStorage.getItem('isSeller') === 'true'
+        }
+    })
     return { username, password, isLogin, isSeller, isBuyer, login, logout }
 })
 

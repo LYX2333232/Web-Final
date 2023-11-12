@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import router from '../../routers'
 import { useUserStore } from '../../stores/user'
 
 const { login } = useUserStore()
 
 const formData = ref({
+    occupation: 'buyer',
     username: '',
     password: ''
 })
@@ -17,17 +19,54 @@ const rules = ref({
     ]
 })
 
-const isBuyer = ref(true)
+const form = ref()
 
-const handleLogin = () => {
-    login(formData.value.username, formData.value.password, isBuyer.value, !isBuyer.value)
+const isBuyer = ref(true)
+const isRegister = ref(false)
+
+const register = () => {
+    // 表单校验
+    form.value.validate((valid) => {
+        if (!valid) {
+            return
+        }
+    })
+    if (isBuyer.value) {
+        // TODO: buyer register
+    } else {
+        // TODO: admin register
+    }
+    // TODO: register
+}
+const handleLogin = async () => {
+    // 表单校验
+    form.value.validate((valid) => {
+        if (!valid) {
+            return
+        }
+    })
+    console.log(formData.value)
+    // 登陆接口
+    await login(formData.value.username, formData.value.password, isBuyer.value, !isBuyer.value)
+
+    if (isBuyer.value) {
+        router.push('/buyerHome')
+    } else {
+        router.push('sellerHome')
+    }
+
+}
+const changeRegister = () => {
+    isRegister.value = !isRegister.value
 }
 </script>
 
 <template>
-    <div v-if="isBuyer">用户登陆</div>
-    <div v-else>管理员登陆</div>
     <el-form ref="form" :model="formData" :rules="rules" label-width="80px">
+        <el-form-item>
+            <el-radio v-model="formData.occupation" :label="'buyer'">买家</el-radio>
+            <el-radio v-model="formData.occupation" :label="'admin'">管理员</el-radio>
+        </el-form-item>
         <el-form-item label="用户名" prop="username">
             <el-input v-model="formData.username"></el-input>
         </el-form-item>
@@ -35,7 +74,14 @@ const handleLogin = () => {
             <el-input v-model="formData.password" type="password"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="handleLogin">登陆</el-button>
+            <div v-if="isRegister">
+                <el-button type="primary" @click="register">注册</el-button>
+                <el-button type="default" @click="changeRegister">返回</el-button>
+            </div>
+            <div v-else>
+                <el-button type="primary" @click="handleLogin">登陆</el-button>
+                <el-button type="default" @click="changeRegister">注册</el-button>
+            </div>
         </el-form-item>
     </el-form>
 </template>
