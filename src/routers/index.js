@@ -5,12 +5,12 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        redirect: '/buyerHome',
+        redirect: '/buyer/main',
         children: [
             {
-                path: 'buyerHome',
+                path: 'buyer',
                 name: 'buyer',
-                redirect: '/buyerHome/main',
+                redirect: '/buyer/main',
                 component: () => import('@/views/buyer/buyerPage.vue'),
                 children: [
                     {
@@ -27,11 +27,16 @@ const routes = [
                         path: 'info',
                         name: 'buyerInfo',
                         component: () => import('@/views/buyer/info/infoPage.vue')
+                    },
+                    {
+                        path: 'detail',
+                        name: 'buyerDetail',
+                        component: () => import('@/views/buyer/detailPage.vue')
                     }
                 ]
             },
             {
-                path: 'sellerHome',
+                path: 'seller',
                 name: 'seller',
                 component: () => import('@/views/seller/sellerPage.vue')
             }

@@ -5,6 +5,8 @@ import ElementPlus from 'element-plus'
 import router from './routers'
 import App from './App.vue'
 
+import 'virtual:windi.css'
+
 const persist = createPersistedState()
 const pinia = createPinia()
 pinia.use(persist)

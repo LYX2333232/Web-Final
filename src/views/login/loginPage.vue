@@ -49,9 +49,9 @@ const handleLogin = async () => {
     await login(formData.value.username, formData.value.password, isBuyer.value, !isBuyer.value)
 
     if (isBuyer.value) {
-        router.push('/buyerHome')
+        router.push('/buyer')
     } else {
-        router.push('sellerHome')
+        router.push('/seller')
     }
 
 }
