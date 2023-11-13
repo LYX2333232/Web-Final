@@ -10,7 +10,25 @@ const routes = [
             {
                 path: 'buyerHome',
                 name: 'buyer',
-                component: () => import('@/views/buyer/buyerPage.vue')
+                redirect: '/buyerHome/main',
+                component: () => import('@/views/buyer/buyerPage.vue'),
+                children: [
+                    {
+                        path: 'main',
+                        name: 'buyerMain',
+                        component: () => import('@/views/buyer/main/mainPage.vue')
+                    },
+                    {
+                        path: 'cart',
+                        name: 'buyerCart',
+                        component: () => import('@/views/buyer/cart/cartPage.vue')
+                    },
+                    {
+                        path: 'info',
+                        name: 'buyerInfo',
+                        component: () => import('@/views/buyer/info/infoPage.vue')
+                    }
+                ]
             },
             {
                 path: 'sellerHome',
@@ -35,6 +53,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const userStore = useUserStore()
     if (to.name !== 'Login' && !userStore.isLogin) {
+        console.log(userStore.isLogin)
         next({ name: 'Login' })
     } else {
         next()

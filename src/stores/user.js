@@ -7,29 +7,30 @@ export const useUserStore = defineStore('user', () => {
     const isBuyer = ref(false)
     const isSeller = ref(false)
     const isLogin = ref(false)
-    const login = (username, password, isBuyer, isSeller) => {
+    const login = (u, p, b, s) => {
         if (true) {
-            localStorage.setItem('isLogin', 'true')
-            localStorage.setItem('username', username)
-            localStorage.setItem('password', password)
-            localStorage.setItem('isBuyer', isBuyer)
-            localStorage.setItem('isSeller', isSeller)
+            username.value = u
+            password.value = p
+            isBuyer.value = b
+            isSeller.value = s
             isLogin.value = true
+
         }
     }
     const logout = () => {
-        localStorage.clear()
-    }
-    onMounted(() => {
-        if (localStorage.getItem('isLogin') === 'true') {
-            username.value = localStorage.getItem('username')
-            password.value = localStorage.getItem('password')
-            isLogin.value = localStorage.getItem('isLogin') === 'true'
-            isBuyer.value = localStorage.getItem('isBuyer') === 'true'
-            isSeller.value = localStorage.getItem('isSeller') === 'true'
+        if (true) {
+            username.value = ''
+            password.value = ''
+            isBuyer.value = false
+            isSeller.value = false
+            isLogin.value = false
         }
-    })
+    }
     return { username, password, isLogin, isSeller, isBuyer, login, logout }
-})
+},
+    {
+        persist: true
+    }
+)
 
 export default useUserStore

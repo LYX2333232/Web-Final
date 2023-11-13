@@ -40,11 +40,10 @@ const register = () => {
 }
 const handleLogin = async () => {
     // 表单校验
-    form.value.validate((valid) => {
-        if (!valid) {
-            return
-        }
-    })
+    const res = await form.value.validate()
+    if (!res) {
+        return
+    }
     console.log(formData.value)
     // 登陆接口
     await login(formData.value.username, formData.value.password, isBuyer.value, !isBuyer.value)
@@ -62,7 +61,7 @@ const changeRegister = () => {
 </script>
 
 <template>
-    <el-form ref="form" :model="formData" :rules="rules" label-width="80px">
+    <el-form ref="form" :model="formData" :rules="rules" label-width="80px" class="form">
         <el-form-item>
             <el-radio v-model="formData.occupation" :label="'buyer'">买家</el-radio>
             <el-radio v-model="formData.occupation" :label="'admin'">管理员</el-radio>
@@ -85,3 +84,10 @@ const changeRegister = () => {
         </el-form-item>
     </el-form>
 </template>
+
+<style scoped>
+.form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+</style>
