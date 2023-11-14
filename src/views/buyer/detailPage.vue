@@ -16,7 +16,7 @@ const handleBuy = () => {
 </script>
 
 <template>
-    <el-descriptions title="商品信息" :column="1">
+    <el-descriptions title="商品信息" :column="1" border>
         <el-descriptions-item label="商品图片">
             <div class="w-40 h-50">
                 <el-image :src="good.img" :fit="'contain'" />

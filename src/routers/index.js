@@ -5,7 +5,7 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        redirect: '/buyer/main',
+        redirect: '/login',
         children: [
             {
                 path: 'buyer',
@@ -24,14 +24,19 @@ const routes = [
                         component: () => import('@/views/buyer/cart/cartPage.vue')
                     },
                     {
-                        path: 'info',
-                        name: 'buyerInfo',
-                        component: () => import('@/views/buyer/info/infoPage.vue')
-                    },
-                    {
                         path: 'detail',
                         name: 'buyerDetail',
                         component: () => import('@/views/buyer/detailPage.vue')
+                    },
+                    {
+                        path: 'info',
+                        name: 'buyerInfo',
+                        component: () => import('@/views/buyer/info/namePage.vue')
+                    },
+                    {
+                        path: 'address',
+                        name: 'buyerAddress',
+                        component: () => import('@/views/buyer/info/addressPage.vue')
                     }
                 ]
             },
