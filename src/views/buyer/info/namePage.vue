@@ -1,16 +1,19 @@
 <script setup>
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 
-const { nickname, gender, updateName, updateGender } = useUserStore()
+const { userid } = useUserStore()
+
+const nickname = ref()
+const gender = ref()
 
 const visible = ref(false)
 const confirmLoading = ref(false)
 const form = ref()
 
 const handleEdit = () => {
-    FormData.value.nickname = nickname
-    FormData.value.gender = gender
+    FormData.value.nickname = nickname.value
+    FormData.value.gender = gender.value
     visible.value = true
 }
 
@@ -25,9 +28,20 @@ const rules = {
 }
 
 const FormData = ref({
-    nickname,
-    gender
+    nickname: '',
+    gender: undefined
 })
+const getData = ()=>{
+    console.log(userid)
+    if (userid) {
+        // TODO: 获取数据
+        
+        // 静态数据
+        nickname.value = '小明'
+        gender.value = 1
+    }
+
+}
 const handleCancel = () => {
     visible.value = false
     form.value.resetFields()
@@ -39,12 +53,21 @@ const handleOk = async () => {
         return
     }
     console.log(FormData.value)
-    updateName(FormData.value.nickname)
-    updateGender(FormData.value.gender)
+    confirmLoading.value = true
+    // 上传数据
+    if (userid) {
+        // TODO: 修改数据
+        
+    }
+    confirmLoading.value = false
     visible.value = false
     form.value.resetFields()
-    location.reload()
+    getData()
 }
+
+onMounted(() => {
+    getData()
+})
 </script>
 
 <template>
@@ -77,9 +100,9 @@ const handleOk = async () => {
                 </el-radio-group>
             </el-form-item>
         </el-form>
-        <span slot="footer" class="dialog-footer">
+        <template #footer>
             <el-button @click="handleCancel">取 消</el-button>
             <el-button type="primary" @click="handleOk" :loading="confirmLoading">确 定</el-button>
-        </span>
+        </template>
     </el-dialog>
 </template>

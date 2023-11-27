@@ -46,7 +46,7 @@ const handleLogin = async () => {
     }
     console.log(formData.value)
     // 登陆接口
-    await login(formData.value.username, formData.value.password, isBuyer.value, !isBuyer.value)
+    await login(formData.value.username, formData.value.password, formData.value.occupation)
 
     if (isBuyer.value) {
         router.push('/buyer')

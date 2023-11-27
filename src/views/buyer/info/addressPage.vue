@@ -2,14 +2,41 @@
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 
-const { addressInfo, updateAddress } = useUserStore()
+const { userid } = useUserStore()
 
+// loading条
 const loading = ref(false)
+
+// 地址信息
+const addressInfo = ref([])
 
 const visible = ref(false)
 const confirmLoading = ref(false)
 const title = ref('')
 const form = ref()
+
+// 获取地址信息
+const getData = () => {
+    loading.value = true
+    // 获取信息
+
+    // 静态数据
+    addressInfo.value = [
+        {
+            id: 1,
+            name: '张三',
+            phone: '135****8888',
+            address: '北京市朝阳区东四环中路123号'
+        },
+        {
+            id: 2,
+            name: '李四',
+            phone: '135****8888',
+            address: '北京市朝阳区东四环中路123号'
+        }
+    ]
+    loading.value = false
+}
 
 const handleAdd = () => {
     visible.value = true
@@ -55,7 +82,7 @@ const handleOk = async () => {
     form.value.resetFields()
 }
 onMounted(() => {
-    console.log(addressInfo.value)
+    getData()
 })
 </script>
 

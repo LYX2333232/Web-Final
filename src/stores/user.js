@@ -1,48 +1,38 @@
+/* eslint-disable no-constant-condition */
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 export const useUserStore = defineStore('user', () => {
-    const username = ref('123')
-    const nickname = ref('lyx')
+    const userid = ref()
+    const nickname = ref()
     const gender = ref(null)
-    const addressInfo = ref([])
-    const password = ref('abc')
-    const isBuyer = ref(false)
-    const isSeller = ref(false)
+    const password = ref()
+    const occupation = ref()
     const isLogin = ref(false)
-    const login = (u, p, b, s) => {
+    const login = (u, p, o) => {
+        const res = axios.post('/login', {
+            userid: u,
+            password: p,
+            occupation: o
+        })
+        console.log(res)
         if (true) {
-            username.value = u
+            userid.value = u
             password.value = p
-            isBuyer.value = b
-            isSeller.value = s
+            occupation.value = o
             isLogin.value = true
-
-            const address = [
-                {
-                    name: 'lyx',
-                    phone: '123456789',
-                    address: '123'
-                },
-                {
-                    name: 'lyx',
-                    phone: '123456789',
-                    address: '123'
-                }
-            ]
-            // update()
-            update('lyx', 0, address)
         }
     }
     const logout = () => {
         if (true) {
-            username.value = ''
+            userid.value = ''
             password.value = ''
-            isBuyer.value = false
-            isSeller.value = false
             isLogin.value = false
-            addressInfo.value = []
-            update('', '', [])
+            nickname.value = ''
+            gender.value = null
+            occupation.value = ''
+            console.log('logout')
         }
     }
     const updateName = (name) => {
@@ -50,29 +40,7 @@ export const useUserStore = defineStore('user', () => {
         console.log('updateName')
         nickname.value = name
     }
-    const updateGender = (sex) => {
-        // 从后台更新数据
-        console.log('updateGender')
-        gender.value = sex
-    }
-    const updateAddress = (a) => {
-        // 从后台更新数据
-        addressInfo.value = []
-        //判断a是否为数组
-        if (a instanceof Array) {
-            addressInfo.value = a
-        } else {
-            addressInfo.value.push(a)
-        }
-    }
-    const update = (name, sex, a) => {
-        if (true) {
-            updateName(name)
-            updateGender(sex)
-            updateAddress(a)
-        }
-    }
-    return { username, password, isLogin, isSeller, isBuyer, login, logout, nickname, gender, addressInfo, update, updateName, updateGender, updateAddress }
+    return { userid, password, isLogin, login, logout, nickname, gender, updateName }
 },
     {
         persist: true
