@@ -106,6 +106,9 @@ const toDetail = (id) => {
         }
     })
 }
+const settle = () => {
+    console.log("结算")
+}
 onMounted(() => {
     getList()
 })
@@ -117,7 +120,7 @@ onMounted(() => {
             <div style="display: flex; justifyContent: space-between;">
                 <span>共有<span class="text-red-600">{{ num }}</span>件商品，总计<span class="text-red-600">{{ total
                 }}</span>元</span>
-                <el-button type="primary" @click="">结算</el-button>
+                <el-button type="primary" @click=settle >结算</el-button>
             </div>
         </template>
         <el-row>
