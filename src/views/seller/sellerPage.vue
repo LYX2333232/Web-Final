@@ -85,7 +85,7 @@ const handleCancel = () => {
                     <template #title>
                         <span>商户信息</span>
                     </template>
-                    <el-menu-item index="/seller/info">商家昵称</el-menu-item>
+                    <el-menu-item index="/seller/info">商家信息</el-menu-item>
                     <el-menu-item @click="changePassword">修改密码</el-menu-item>
                 </el-sub-menu>
                 <el-menu-item @click="quit">退出登陆</el-menu-item>
