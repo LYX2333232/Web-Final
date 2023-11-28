@@ -108,9 +108,9 @@ const handleCancel = () => {
                 <el-input v-model="formData.confirmPassword" type="password" />
             </el-form-item>
         </el-form>
-        <span slot="footer" class="dialog-footer" style="display: flex; justify-content: space-evenly">
+        <template #footer>
             <el-button @click="handleCancel">取 消</el-button>
             <el-button type="primary" @click="handleOk">确 定</el-button>
-        </span>
+        </template>
     </el-dialog>
 </template>

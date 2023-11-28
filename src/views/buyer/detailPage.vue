@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 const good = ref({
+    id: 1,
     img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
     name: '小米手机',
     price: 3000,

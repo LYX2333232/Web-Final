@@ -43,7 +43,35 @@ const routes = [
             {
                 path: 'seller',
                 name: 'seller',
-                component: () => import('@/views/seller/sellerPage.vue')
+                redirect: '/seller/list',
+                component: () => import('@/views/seller/sellerPage.vue'),
+                children: [
+                    {
+                        path: 'list',
+                        name: 'sellerList',
+                        component: () => import('@/views/seller/list/listPage.vue')
+                    },
+                    {
+                        path: 'table',
+                        name: 'sellerTable',
+                        component: () => import('@/views/seller/table/tablePage.vue')
+                    },
+                    {
+                        path: 'browse',
+                        name: 'sellerBrowse',
+                        component: () => import('@/views/seller/browse/browsePage.vue')
+                    },
+                    {
+                        path: 'buy',
+                        name: 'sellerBuy',
+                        component: () => import('@/views/seller/buy/buyPage.vue')
+                    },
+                    {
+                        path: 'info',
+                        name: 'sellerInfo',
+                        component: () => import('@/views/seller/info/infoPage.vue')
+                    }
+                ]
             }
         ]
     },
