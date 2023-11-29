@@ -1,5 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+
+// 表单信息
+const form = ref({
+    name: undefined,
+    minPrice: undefined,
+    maxPrice: undefined
+})
 // 商品信息
 const dataList = ref([])
 
@@ -51,6 +58,31 @@ onMounted(() => {
                 <el-button type="primary" @click="add">新增</el-button>
             </div>
         </template>
+        <el-row>
+            <el-col :span="16" xs="24">
+                <el-form ref="form" :model="form">
+                    <el-form-item label="商品名称" prop="name">
+                        <el-input placeholder="请输入商品名称" :maxLength="20" v-model="form.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品价格范围" prop="price">
+                        <el-row :gutter="20">
+                            <el-col :span="11">
+                                <el-input-number placeholder="请输入最小价格" v-model="form.minPrice" min="0"
+                                    max="form.maxPrice"></el-input-number>
+                            </el-col>
+                            <el-col :span="11">
+                                <el-input-number placeholder="请输入最大价格" v-model="form.maxPrice"
+                                    :min="form.minPrice || 0"></el-input-number>
+                            </el-col>
+                        </el-row>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <el-col :span="8" xs="24" class="flex justify-evenly">
+                <el-button type="danger" @click="reset">重置</el-button>
+                <el-button type="primary" @click="getList">查询</el-button>
+            </el-col>
+        </el-row>
         <el-table :data="dataList" :loading="loading" bordered rowKey="id">
             <el-table-column label="id" prop="id" align="center" />
             <el-table-column label="商品名称" prop="name" align="center" />
