@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', () => {
     const occupation = ref()
     const isLogin = ref(false)
     const login = (u, p, o) => {
-        const res = axios.post('/login', {
+        const res = axios.post('/api/login', {
             userid: u,
             password: p,
             occupation: o

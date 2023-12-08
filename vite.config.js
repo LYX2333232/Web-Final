@@ -9,6 +9,9 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    base: '/activity'
+  },
   plugins: [
     vue(),
     WindiCSS(),
@@ -19,11 +22,12 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     })
   ],
-  server:{
+  server: {
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:4523/m1/3654944-0-default',
+        target: 'http://127.0.0.1:8080',
         changeOrigin: true,
+        ws: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
     }

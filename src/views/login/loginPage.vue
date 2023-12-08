@@ -1,7 +1,9 @@
+<!-- eslint-disable no-undef -->
 <script setup lang="ts">
 import { ref } from 'vue'
-import router from '../../routers'
-import { useUserStore } from '../../stores/user'
+import router from '@/routers'
+import { useUserStore } from '@/stores/user'
+import { register } from "@/api/login"
 
 const { login } = useUserStore()
 
@@ -21,22 +23,27 @@ const rules = ref({
 
 const form = ref()
 
-const isBuyer = ref(true)
 const isRegister = ref(false)
 
-const register = () => {
+const handleRegister = async () => {
     // 表单校验
     form.value.validate((valid) => {
         if (!valid) {
             return
         }
     })
-    if (isBuyer.value) {
-        // TODO: buyer register
-    } else {
-        // TODO: admin register
+    const config = {
+        username: formData.value.username,
+        password: formData.value.password,
+        occupation: formData.value.occupation
     }
-    // TODO: register
+    const res = await register(config)
+    console.log(res)
+    if (res.data.code === 200) {
+        alert('注册成功')
+    }
+
+
 }
 const handleLogin = async () => {
     // 表单校验
@@ -64,7 +71,7 @@ const changeRegister = () => {
     <el-form ref="form" :model="formData" :rules="rules" label-width="80px" class="form">
         <el-form-item>
             <el-radio v-model="formData.occupation" :label="'buyer'">买家</el-radio>
-            <el-radio v-model="formData.occupation" :label="'admin'">管理员</el-radio>
+            <el-radio v-model="formData.occupation" :label="'seller'">管理员</el-radio>
         </el-form-item>
         <el-form-item label="用户名" prop="username">
             <el-input v-model="formData.username"></el-input>
@@ -74,7 +81,7 @@ const changeRegister = () => {
         </el-form-item>
         <el-form-item>
             <div v-if="isRegister">
-                <el-button type="primary" @click="register">注册</el-button>
+                <el-button type="primary" @click="handleRegister">注册</el-button>
                 <el-button type="default" @click="changeRegister">返回</el-button>
             </div>
             <div v-else>
