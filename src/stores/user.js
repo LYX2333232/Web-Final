@@ -4,29 +4,35 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 
 export const useUserStore = defineStore('user', () => {
-    const userid = ref()
-    const nickname = ref()
+    const userId = ref('')
+    const nickname = ref('')
     const gender = ref(null)
-    const password = ref()
-    const occupation = ref()
+    const password = ref('')
+    const occupation = ref('')
     const isLogin = ref(false)
-    const login = (u, p, o) => {
-        const res = axios.post('/api/login', {
-            userid: u,
+    const login = async (u, p, o) => {
+        const res = await axios.post('/api/login', {
+            username: u,
             password: p,
             occupation: o
         })
-        console.log(res)
-        if (true) {
-            userid.value = u
+        console.log(res.data)
+        if (res.data.code == 200) {
+            userId.value = u
             password.value = p
             occupation.value = o
             isLogin.value = true
+            return true
+        }
+        else {
+            console.log('login failed')
+            isLogin.value = false
+            return false
         }
     }
     const logout = () => {
         if (true) {
-            userid.value = ''
+            userId.value = ''
             password.value = ''
             isLogin.value = false
             nickname.value = ''
@@ -40,7 +46,7 @@ export const useUserStore = defineStore('user', () => {
         console.log('updateName')
         nickname.value = name
     }
-    return { userid, password, isLogin, login, logout, nickname, gender, updateName }
+    return { userId, password, isLogin, login, logout, nickname, gender, updateName }
 },
     {
         persist: true

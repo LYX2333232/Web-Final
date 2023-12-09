@@ -41,6 +41,7 @@ const handleRegister = async () => {
     console.log(res)
     if (res.data.code === 200) {
         alert('注册成功')
+        isRegister.value = false
     }
 
 
@@ -52,14 +53,19 @@ const handleLogin = async () => {
         return
     }
     console.log(formData.value)
-    // 登陆接口
-    await login(formData.value.username, formData.value.password, formData.value.occupation)
 
-    if (formData.value.occupation === 'buyer') {
-        router.push('/buyer')
-    } else {
-        router.push('/seller')
+    // 登陆接口
+    if (await login(formData.value.username, formData.value.password, formData.value.occupation)) {
+        if (formData.value.occupation === 'buyer') {
+            router.push('/buyer')
+        } else {
+            router.push('/seller')
+        }
     }
+    else {
+        alert('用户名或密码错误')
+    }
+
 
 }
 const changeRegister = () => {
