@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import router from '@/routers'
-import {getGoodsList} from '@/api/buyer/mainPage'
+import { getGoodsList } from '@/api/buyer/mainPage'
 // import { useUserStore } from '@/stores/user'
 
 // const { username, password } = useUserStore()
@@ -74,16 +74,13 @@ const dataList = ref(
 const toDetail = (id) => {
     console.log(id)
     router.push({
-        path: '/buyer/detail',
-        query: {
-            id: id
-        }
+        path: '/buyer/detail/' + id,
     })
 }
-const getList = async()=>{
+const getList = async () => {
     const res = await getGoodsList()
     console.log(res)
-    dataList.value = res.data.records
+    dataList.value = res.data.data
 }
 
 onMounted(() => {
