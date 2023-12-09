@@ -1,11 +1,15 @@
+<!-- eslint-disable no-undef -->
 <script setup>
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
+import router from '@/routers'
+import { getInfo, updateInfo } from '@/api/buyer/infoPage'
 
-const { userid } = useUserStore()
+const { userId } = useUserStore()
 
 const nickname = ref()
 const gender = ref()
+const age = ref()
 
 const visible = ref(false)
 const confirmLoading = ref(false)
@@ -14,6 +18,7 @@ const form = ref()
 const handleEdit = () => {
     FormData.value.nickname = nickname.value
     FormData.value.gender = gender.value
+    FormData.value.age = age.value
     visible.value = true
 }
 
@@ -29,16 +34,29 @@ const rules = {
 
 const FormData = ref({
     nickname: '',
-    gender: undefined
+    gender: undefined,
+    age: undefined
 })
-const getData = ()=>{
-    console.log(userid)
-    if (userid) {
+const getData = async () => {
+    console.log(userId)
+    if (userId) {
         // TODO: 获取数据
-        
-        // 静态数据
-        nickname.value = '小明'
-        gender.value = 1
+        const res = await getInfo(userId)
+        console.log(res.data)
+        if (res.data.code === 200) {
+            nickname.value = res.data.data.nickname
+            gender.value = res.data.data.gender
+            age.value = res.data.data.age
+        }
+        else {
+            ElMessage.warning(res.data.msg)
+        }
+    }
+    else {
+        ElMessage.warning('请先登录')
+        router.push({
+            path: '/buyer/login'
+        })
     }
 
 }
@@ -55,9 +73,18 @@ const handleOk = async () => {
     console.log(FormData.value)
     confirmLoading.value = true
     // 上传数据
-    if (userid) {
+    if (userId) {
         // TODO: 修改数据
-        
+        const data = FormData.value
+        data.id = userId
+        const res = await updateInfo(FormData.value)
+        console.log(res)
+        if (res.data.code === 200) {
+            ElMessage.success("修改成功")
+        }
+        else {
+            ElMessage.warning("修改失败")
+        }
     }
     confirmLoading.value = false
     visible.value = false
@@ -85,6 +112,9 @@ onMounted(() => {
                 <div v-if="gender === 2">女</div>
                 <div v-if="gender === 0">保密</div>
             </el-descriptions-item>
+            <el-descriptions-item label="年龄">
+                {{ age }}
+            </el-descriptions-item>
         </el-descriptions>
     </el-card>
     <el-dialog title="修改信息" width="600px" v-model="visible">
@@ -98,6 +128,9 @@ onMounted(() => {
                     <el-radio :label="2">女</el-radio>
                     <el-radio :label="0">保密</el-radio>
                 </el-radio-group>
+            </el-form-item>
+            <el-form-item label="年龄" prop="age">
+                <el-input placeholder="请输入年龄" v-model="FormData.age" />
             </el-form-item>
         </el-form>
         <template #footer>

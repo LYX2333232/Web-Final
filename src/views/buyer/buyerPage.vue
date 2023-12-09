@@ -1,9 +1,11 @@
+<!-- eslint-disable no-undef -->
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '../../stores/user'
-import router from '../../routers'
+import { useUserStore } from '@/stores/user'
+import router from '@/routers'
+import { changePassword } from '@/api/buyer/password'
 
-const { logout } = useUserStore()
+const { userId, logout } = useUserStore()
 
 const visible = ref(false)
 
@@ -45,12 +47,6 @@ const rules = ref({
     ]
 })
 
-const changePassword = () => {
-    console.log("修改密码")
-    // 弹出页面
-    visible.value = true
-}
-
 const quit = () => {
     console.log("退出")
     logout()
@@ -62,7 +58,22 @@ const handleOk = async () => {
     if (!res) {
         return
     }
-    console.log("确认")
+    const data = {
+        id: userId,
+        oldPassword: formData.value.oldPassword,
+        newPassword: formData.value.newPassword
+    }
+    console.log(data)
+    const res2 = await changePassword(data)
+    console.log(res2)
+
+    if (res2.data.code === 200) {
+        ElMessage.success(res2.data.msg)
+    }
+    if (res2.data.code === 400) {
+        ElMessage.error(res2.data.msg)
+        return
+    }
     form.value.resetFields()
     visible.value = false
 }
@@ -85,7 +96,7 @@ const handleCancel = () => {
                     </template>
                     <el-menu-item index="/buyer/info">个人昵称</el-menu-item>
                     <el-menu-item index="/buyer/address">收货地址</el-menu-item>
-                    <el-menu-item @click="changePassword">修改密码</el-menu-item>
+                    <el-menu-item @click="visible = true">修改密码</el-menu-item>
                 </el-sub-menu>
                 <el-menu-item @click="quit">退出登陆</el-menu-item>
             </el-menu>

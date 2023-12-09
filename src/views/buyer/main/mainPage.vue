@@ -1,78 +1,22 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import router from '@/routers'
-import { getGoodsList } from '@/api/buyer/mainPage'
-// import { useUserStore } from '@/stores/user'
+import { getGoodsList, recordBrowse } from '@/api/buyer/mainPage'
+import { useUserStore } from '@/stores/user'
+import { datetimeFormat } from '@/utils/datetimeFormat'
 
-// const { username, password } = useUserStore()
+const { userId } = useUserStore()
 
-const dataList = ref(
-    [
-        // 获取8个商品
-        {
-            id: 1,
-            name: '商品1',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 100
-        },
-        {
-            id: 2,
-            name: '商品2',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 200
-        },
-        {
-            id: 3,
-            name: '商品3',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 300
-        },
-        {
-            id: 4,
-            name: '商品4',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 400
-        },
-        {
-            id: 5,
-            name: '商品5',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 500
-        },
-        {
-            id: 6,
-            name: '商品6',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 600
-        },
-        {
-            id: 7,
-            name: '商品7',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 700
-        },
-        {
-            id: 8,
-            name: '商品8',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 1000
-        },
-        {
-            id: 9,
-            name: '商品9',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 1000
-        },
-        {
-            id: 10,
-            name: '商品10',
-            img: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-            price: 1000
-        }
-    ]
-)
+const dataList = ref([])
 const toDetail = (id) => {
     console.log(id)
+    const data = {
+        goodId: id,
+        buyerId: userId,
+        time: datetimeFormat(new Date())
+    }
+    console.log(data)
+    recordBrowse(data)
     router.push({
         path: '/buyer/detail/' + id,
     })

@@ -4,10 +4,7 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 
 export const useUserStore = defineStore('user', () => {
-    const userId = ref('')
-    const nickname = ref('')
-    const gender = ref(null)
-    const password = ref('')
+    const userId = ref(-1)
     const occupation = ref('')
     const isLogin = ref(false)
     const login = async (u, p, o) => {
@@ -18,8 +15,7 @@ export const useUserStore = defineStore('user', () => {
         })
         console.log(res.data)
         if (res.data.code == 200) {
-            userId.value = u
-            password.value = p
+            userId.value = res.data.data.id
             occupation.value = o
             isLogin.value = true
             return true
@@ -33,20 +29,11 @@ export const useUserStore = defineStore('user', () => {
     const logout = () => {
         if (true) {
             userId.value = ''
-            password.value = ''
-            isLogin.value = false
-            nickname.value = ''
-            gender.value = null
             occupation.value = ''
             console.log('logout')
         }
     }
-    const updateName = (name) => {
-        // 从后台更新数据
-        console.log('updateName')
-        nickname.value = name
-    }
-    return { userId, password, isLogin, login, logout, nickname, gender, updateName }
+    return { userId, isLogin, login, logout }
 },
     {
         persist: true
