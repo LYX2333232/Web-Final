@@ -1,0 +1,7 @@
+import axios from "axios"
+
+export const getOrder = async (id) => axios.get("/api/getOrderInfo?id=" + id)
+
+export const getAllOrders = async (id) => axios.get("/api/getAllOrders?buyerId=" + id)
+
+export const newOrder = async (data) => axios.post("/api/newOrder", data)

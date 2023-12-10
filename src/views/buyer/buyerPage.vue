@@ -1,4 +1,3 @@
-<!-- eslint-disable no-undef -->
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/user'

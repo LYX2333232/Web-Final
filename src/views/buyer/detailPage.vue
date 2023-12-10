@@ -1,21 +1,21 @@
-<!-- eslint-disable no-undef -->
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getGoodDetail, buyGood, addToCart } from '@/api/buyer/mainPage'
+import router from '@/routers'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { datetimeFormat } from '@/utils/datetimeFormat'
 
-const { userId, isLogin } = useUserStore()
+const { userId } = useUserStore()
 
 const route = useRoute()
 
 const good = ref({
-    id: 1,
-    name: '商品1',
-    image: 'https://img.yzcdn.cn/vant/ipad.jpeg',
-    price: 100,
-    desc: '商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描'
+    id: 0,
+    name: '',
+    price: 0,
+    desc: '',
+    image: ''
 })
 // 获取商品详情
 const getDetail = async () => {
@@ -69,7 +69,16 @@ const rules = {
         { required: true, message: '请输入姓名', trigger: 'blur' }
     ],
     phone: [
-        { required: true, message: '请输入联系电话', trigger: 'blur' }
+        { required: true, message: '请输入联系电话', trigger: 'blur' },
+        {
+            validator: (rule, value, callback) => {
+                if (!(/^1[3456789]\d{9}$/.test(value))) {
+                    callback(new Error('手机号格式不正确'))
+                } else {
+                    callback()
+                }
+            }
+        }
     ],
     email: [
         { required: true, message: '请输入邮箱', trigger: 'blur' },
@@ -96,14 +105,14 @@ const handleOk = async () => {
     console.log(res2)
     if (res2.data.code === 200) {
         ElMessage.success('购买成功')
+        router.push('/buyer/order/' + res2.data.data.id)
     }
     visible.value = false
     form.value.resetFields()
 }
 
-onMounted(() => {
-    getDetail()
-    console.log("id:", userId, isLogin);
+onMounted(async () => {
+    await getDetail()
 })
 </script>
 

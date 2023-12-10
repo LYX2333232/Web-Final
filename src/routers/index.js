@@ -34,9 +34,9 @@ const routes = [
                         component: () => import('@/views/buyer/info/namePage.vue')
                     },
                     {
-                        path: 'address',
-                        name: 'buyerAddress',
-                        component: () => import('@/views/buyer/info/addressPage.vue')
+                        path: 'order/:id',
+                        name: 'buyerOrder',
+                        component: () => import('@/views/buyer/order/orderPage.vue')
                     }
                 ]
             },
