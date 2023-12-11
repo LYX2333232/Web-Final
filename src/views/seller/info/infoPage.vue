@@ -1,11 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { getInfo, changeUsername } from '@/api/seller/infoPage';
 
-const { userid } = useUserStore()
+const { userId } = useUserStore()
 
 const name = ref()
-const gender = ref()
 
 const visible = ref(false)
 const confirmLoading = ref(false)
@@ -13,7 +13,6 @@ const form = ref()
 
 const handleEdit = () => {
   FormData.value.name = name.value
-  FormData.value.gender = gender.value
   visible.value = true
 }
 
@@ -25,17 +24,16 @@ const rules = {
 }
 
 const FormData = ref({
-  name: '',
-  gender: undefined
+  name: ''
 })
-const getData = () => {
-  console.log(userid)
-  if (userid) {
-    // TODO: 获取数据
-
-    // 静态数据
-    name.value = '小明'
-    gender.value = 1
+const getData = async () => {
+  console.log(userId)
+  if (userId) {
+    const res = await getInfo(userId)
+    console.log(res)
+    if (res.data.code === 200) {
+      name.value = res.data.data.username
+    }
   }
 
 }
@@ -52,9 +50,20 @@ const handleOk = async () => {
   console.log(FormData.value)
   confirmLoading.value = true
   // 上传数据
-  if (userid) {
+  if (userId) {
     // TODO: 修改数据
-
+    const data = {
+      id: userId,
+      username: FormData.value.name
+    }
+    const res = await changeUsername(data)
+    console.log(res)
+    if (res.data.code === 200) {
+      ElMessage.success('修改成功')
+    }
+    else {
+      ElMessage.error('修改失败')
+    }
   }
   confirmLoading.value = false
   visible.value = false

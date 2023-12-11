@@ -52,6 +52,16 @@ const routes = [
                         component: () => import('@/views/seller/list/listPage.vue')
                     },
                     {
+                        path: 'add',
+                        name: 'sellerAdd',
+                        component: () => import('@/views/seller/list/addPage.vue')
+                    },
+                    {
+                        path: 'detail/:id',
+                        name: 'sellerDetail',
+                        component: () => import('@/views/seller/detailPage.vue')
+                    },
+                    {
                         path: 'table',
                         name: 'sellerTable',
                         component: () => import('@/views/seller/table/tablePage.vue')
@@ -60,11 +70,6 @@ const routes = [
                         path: 'browse',
                         name: 'sellerBrowse',
                         component: () => import('@/views/seller/browse/browsePage.vue')
-                    },
-                    {
-                        path: 'buy',
-                        name: 'sellerBuy',
-                        component: () => import('@/views/seller/buy/buyPage.vue')
                     },
                     {
                         path: 'info',

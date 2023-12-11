@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '../../stores/user'
-import router from '../../routers'
+import { useUserStore } from '@/stores/user'
+import router from '@/routers'
+import { changePassword } from '@/api/seller/infoPage'
 
-const { logout } = useUserStore()
+const { userId, logout } = useUserStore()
 
 const visible = ref(false)
 
@@ -45,12 +46,6 @@ const rules = ref({
     ]
 })
 
-const changePassword = () => {
-    console.log("修改密码")
-    // 弹出页面
-    visible.value = true
-}
-
 const quit = () => {
     console.log("退出")
     logout()
@@ -63,6 +58,21 @@ const handleOk = async () => {
         return
     }
     console.log("确认")
+    const data = {
+        id: userId,
+        oldPassword: formData.value.oldPassword,
+        newPassword: formData.value.newPassword
+    }
+    const res2 = await changePassword(data)
+    console.log(res2)
+    if (res2.data.code === 200) {
+        ElMessage.success('修改成功')
+    }
+    else {
+        ElMessage.error('修改失败')
+        return
+    }
+
     form.value.resetFields()
     visible.value = false
 }
@@ -80,13 +90,12 @@ const handleCancel = () => {
                 <el-menu-item index="/seller/list">商品目录</el-menu-item>
                 <el-menu-item index="/seller/table">销售统计表</el-menu-item>
                 <el-menu-item index="/seller/browse">客户浏览日志记录</el-menu-item>
-                <el-menu-item index="/seller/buy">客户购买日志记录</el-menu-item>
                 <el-sub-menu>
                     <template #title>
                         <span>商户信息</span>
                     </template>
                     <el-menu-item index="/seller/info">商家信息</el-menu-item>
-                    <el-menu-item @click="changePassword">修改密码</el-menu-item>
+                    <el-menu-item @click="visible = true">修改密码</el-menu-item>
                 </el-sub-menu>
                 <el-menu-item @click="quit">退出登陆</el-menu-item>
             </el-menu>

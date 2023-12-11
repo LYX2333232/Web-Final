@@ -1,5 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { getTableList } from '@/api/seller/tablePage'
+import { useUserStore } from '@/stores/user'
+import router from '@/routers'
+
+const { userId } = useUserStore()
 // 查询表单
 const formProps = ref({
     name: undefined,
@@ -12,34 +17,31 @@ const form = ref(null)
 // 展示的数据
 const dataList = ref([])
 // 获取数据
-const getList = () => {
-    // 这里是假数据
-    const list = [
-        {
-            id: 1,
-            name: '商品1',
-            price: 100,
-            sold: 1000
-        },
-        {
-            id: 2,
-            name: '商品2',
-            price: 200,
-            sold: 2000
-        },
-        {
-            id: 3,
-            name: '商品3',
-            price: 300,
-            sold: 3000
-        }
-    ]
-    dataList.value = list
+const getList = async () => {
+    const params = {
+        sellerId: userId,
+        name: formProps.value.name,
+        minPrice: formProps.value.minPrice,
+        maxPrice: formProps.value.maxPrice,
+        minSold: formProps.value.minSold,
+        maxSold: formProps.value.maxSold
+    }
+    const res = await getTableList(params)
+    if (res.data.code !== 200) {
+        ElMessage.error('获取数据失败')
+        return
+    }
+    dataList.value = res.data.data
 }
 // 重置表单
 const reset = () => {
     form.value.resetFields()
     getList()
+}
+
+const toDetail = async (row) => {
+    console.log(row)
+    router.push(`/seller/detail/${row.id}`)
 }
 onMounted(() => {
     getList()
@@ -82,7 +84,6 @@ onMounted(() => {
             <el-table-column label="操作">
                 <template #default="{ row }">
                     <el-button type="primary" @click="toDetail(row)">查看详情</el-button>
-
                 </template>
             </el-table-column>
         </el-table>
