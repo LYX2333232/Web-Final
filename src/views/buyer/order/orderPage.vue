@@ -53,7 +53,6 @@ const getData = async () => {
 }
 
 onMounted(() => {
-    console.log("订单信息")
     getData()
 })
 </script>

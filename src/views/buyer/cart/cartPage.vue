@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import router from '@/routers'
 import { getAll, deleteItem, changeNumber } from '@/api/buyer/cartPage'
-import { newOrder } from '@/api/buyer/orderPage'
+import { buyGood } from '@/api/buyer/mainPage'
 import { datetimeFormat } from '@/utils/datetimeFormat'
 import { useUserStore } from '@/stores/user'
 
@@ -77,7 +77,7 @@ const handleOk = async () => {
         number: selectNumber.value,
         time: datetimeFormat(new Date())
     }
-    const res = await newOrder(data)
+    const res = await buyGood(data)
     if (res.data.code === 200) {
         ElMessage.success('购买成功')
         deleteItem(selectId.value)
