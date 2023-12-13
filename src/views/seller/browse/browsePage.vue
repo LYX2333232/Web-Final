@@ -6,7 +6,6 @@ import { datetimeFormat } from '@/utils/datetimeFormat'
 
 const { userId } = useUserStore()
 
-
 const form = ref(null)
 const formProps = ref({
   userName: undefined,
@@ -61,8 +60,13 @@ onMounted(() => {
             <el-input v-model="formProps.goodName" placeholder="请输入商品名称" />
           </el-form-item>
           <el-form-item label="浏览时间">
-            <el-date-picker v-model="formProps.time" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间"
-              :disabled-date="disabledDate" />
+            <el-date-picker
+              v-model="formProps.time"
+              type="datetimerange"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+              :disabled-date="disabledDate"
+            />
           </el-form-item>
         </el-form>
       </el-col>

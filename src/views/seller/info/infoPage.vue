@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { getInfo, changeUsername } from '@/api/seller/infoPage';
+import { getInfo, changeUsername } from '@/api/seller/infoPage'
 
 const { userId } = useUserStore()
 
@@ -35,7 +35,6 @@ const getData = async () => {
       name.value = res.data.data.username
     }
   }
-
 }
 const handleCancel = () => {
   visible.value = false
@@ -60,8 +59,7 @@ const handleOk = async () => {
     console.log(res)
     if (res.data.code === 200) {
       ElMessage.success('修改成功')
-    }
-    else {
+    } else {
       ElMessage.error('修改失败')
     }
   }

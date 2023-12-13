@@ -1,3 +1,3 @@
-import axios from "axios"
+import axios from 'axios'
 
 export const getGoodDetail = (id) => axios.get('/api/getGoodDetail?id=' + id)

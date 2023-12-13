@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from 'axios'
 
 export const getTableList = (data) => axios.get('/api/getTable', { params: data })
 

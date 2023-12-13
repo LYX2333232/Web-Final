@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from 'axios'
 
 export const getGoodList = (data) => axios.get('/api/getGoodList', { params: data })
 
